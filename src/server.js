@@ -1,25 +1,34 @@
-import http from 'http';
-import app from './app';
+import {register} from './ioc';
 import {boundMethod} from 'autobind-decorator';
+import {APP} from './app';
+import http from 'http';
 import devip from 'dev-ip';
 import args from './args';
 
+export const SERVER = Symbol.for('SERVER');
+
+@register(SERVER, [
+	APP
+])
 export class Server {
 
-	constructor() {
-		this.httpServer = http.createServer(app.expressApp);
+	constructor(app) {
+		this._app = app;
+		this.httpServer = null;
 	}
 
 	@boundMethod
 	start() {
-		return new Promise(resolve => {
-			this.httpServer.listen(args.port, args.host, () => {
-				let ips = devip();
-				let address = this.httpServer.address();
-				ips.push(address.address);
-				resolve(ips);
-			});
-		});
+		return this._app.init()
+			.then(() => new Promise(resolve => {
+				this.httpServer = http.createServer(this._app.expressApp);
+				this.httpServer.listen(args.port, args.host, () => {
+					let ips = devip();
+					let address = this.httpServer.address();
+					ips.push(address.address);
+					resolve(ips);
+				});
+			}));
 	}
 
 	@boundMethod
@@ -37,5 +46,3 @@ export class Server {
 	}
 
 }
-
-export default new Server();

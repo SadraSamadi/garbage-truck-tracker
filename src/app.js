@@ -1,8 +1,12 @@
+import {register} from './ioc';
+import {boundMethod} from 'autobind-decorator';
 import express from 'express';
 import morgan from 'morgan';
-import {boundMethod} from 'autobind-decorator';
 import args from './args';
 
+export const APP = Symbol.for('APP');
+
+@register(APP)
 export class App {
 
 	constructor() {
@@ -15,6 +19,7 @@ export class App {
 		this.expressApp.use(express.json());
 		this.expressApp.use(express.urlencoded({extended: false}));
 		this.expressApp.get('/', this._index);
+		return Promise.resolve();
 	}
 
 	@boundMethod
@@ -23,9 +28,3 @@ export class App {
 	}
 
 }
-
-const app = new App();
-
-app.init();
-
-export default app;

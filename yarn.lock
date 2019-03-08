@@ -1598,7 +1598,7 @@ blob@0.0.5:
   resolved "https://registry.yarnpkg.com/blob/-/blob-0.0.5.tgz#d680eeef25f8cd91ad533f5b01eed48e64caf683"
   integrity sha512-gaqbzQPqOoamawKg0LGVd7SzLgXS+JH61oWprSLH+P+abTczqJbhTR8CmJ2u9/bUYNmHTGJx/UEmn6doAvvuig==
 
-body-parser@1.18.3, body-parser@^1.18.3:
+body-parser@1.18.3:
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.18.3.tgz#5b292198ffdd553b3a0f20ded0592b956955c8b4"
   integrity sha1-WykhmP/dVTs6DyDe0FkrlWlVyLQ=
@@ -3592,6 +3592,18 @@ invariant@^2.2.2, invariant@^2.2.4:
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
   dependencies:
     loose-envify "^1.0.0"
+
+inversify-vanillajs-helpers@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/inversify-vanillajs-helpers/-/inversify-vanillajs-helpers-2.0.0.tgz#a1ce00ec603d1de9e66709979b5655694f58e52e"
+  integrity sha1-oc4A7GA9HenmZwmXm1ZVaU9Y5S4=
+  dependencies:
+    inversify "^3.0.0"
+
+inversify@^3.0.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/inversify/-/inversify-3.3.0.tgz#57ca2e0aaac7b54aa5018ad69a10c5aba366e96e"
+  integrity sha1-V8ouCqrHtUqlAYrWmhDFq6Nm6W4=
 
 inversify@^5.0.1:
   version "5.0.1"

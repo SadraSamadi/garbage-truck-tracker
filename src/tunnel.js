@@ -1,8 +1,12 @@
+import {register} from './ioc';
 import localtunnel from 'localtunnel';
 import util from 'util';
 import args from './args';
 import pkg from '../package';
 
+export const TUNNEL = Symbol.for('TUNNEL');
+
+@register(TUNNEL)
 export class Tunnel {
 
 	constructor() {
@@ -22,5 +26,3 @@ export class Tunnel {
 	}
 
 }
-
-export default new Tunnel();

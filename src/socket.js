@@ -1,22 +1,31 @@
+import {register} from './ioc';
+import {SERVER} from './server';
+import {MANAGER} from './manger';
 import socket_io from 'socket.io';
-import server from './server';
-import {Manager} from './manger';
 
+export const SOCKET = Symbol.for('SOCKET');
+
+@register(SOCKET, [
+	SERVER,
+	MANAGER
+])
 export class Socket {
 
-	constructor() {
+	constructor(server, manager) {
+		this._server = server;
+		this._manager = manager;
 		this._io = null;
-		this._manager = null;
 	}
 
 	start() {
-		this._io = socket_io(server.httpServer);
-		this._manager = new Manager(this._io);
-		return this._manager.init();
+		this._io = socket_io(this._server.httpServer);
+		return this._manager.init(this._io);
 	}
 
 	stop() {
 		return new Promise((resolve, reject) => {
+			if (!this._io.engine)
+				return resolve();
 			this._io.close(err => {
 				if (err)
 					reject(err);
@@ -27,5 +36,3 @@ export class Socket {
 	}
 
 }
-
-export default new Socket();

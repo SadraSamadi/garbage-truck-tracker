@@ -1,6 +1,6 @@
 import {boundMethod} from 'autobind-decorator';
-import logger from './logger';
 import {Subject} from 'rxjs';
+import logger from './logger';
 
 export class User {
 

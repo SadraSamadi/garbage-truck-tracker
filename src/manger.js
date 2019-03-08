@@ -1,15 +1,18 @@
+import {register} from './ioc';
 import {boundMethod} from 'autobind-decorator';
 import {User} from './user';
 
+export const MANAGER = Symbol.for('MANAGER');
+
+@register(MANAGER)
 export class Manager {
 
-	constructor(io) {
-		this._io = io;
+	constructor() {
 		this._map = new Map();
 	}
 
-	init() {
-		this._io.on('connection', this._connection);
+	init(io) {
+		io.on('connection', this._connection);
 		return Promise.resolve();
 	}
 
