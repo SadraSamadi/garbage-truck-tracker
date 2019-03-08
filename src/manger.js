@@ -21,8 +21,8 @@ export class Manager {
 		user.init();
 		user.onRegister()
 			.subscribe(this._register);
-		user.onLocation()
-			.subscribe(this._location);
+		user.onUpdate()
+			.subscribe(this._update);
 		user.onDisconnect()
 			.subscribe(this._disconnect);
 	}
@@ -44,7 +44,7 @@ export class Manager {
 	}
 
 	@boundMethod
-	_location() {
+	_update() {
 		// Blank
 	}
 

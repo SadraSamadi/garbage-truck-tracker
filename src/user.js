@@ -11,7 +11,7 @@ export class User {
 		this.name = null;
 		this.location = null;
 		this._onRegister = new Subject();
-		this._onLocation = new Subject();
+		this._onUpdate = new Subject();
 		this._onDisconnect = new Subject();
 	}
 
@@ -27,12 +27,17 @@ export class User {
 		this.name = name;
 		logger.info('user registered: %s', this.id);
 		logger.info('\t# %s', this.name);
-		this.client.on('update:location', this._location);
+		this.client.broadcast.emit('added', {
+			id: this.id,
+			name: this.name
+		});
+		logger.info('user added broadcast emitted');
+		this.client.on('update:location', this._update);
 		this._onRegister.next(this);
 	}
 
 	@boundMethod
-	_location(location) {
+	_update(location) {
 		this.location = location;
 		logger.info('user location updated: %s', this.id);
 		logger.info('\t# %s', this.name);
@@ -43,7 +48,7 @@ export class User {
 			location: this.location
 		});
 		logger.info('updated location broadcast emitted');
-		this._onLocation.next(this);
+		this._onUpdate.next(this);
 	}
 
 	@boundMethod
@@ -59,8 +64,8 @@ export class User {
 		return this._onRegister.asObservable();
 	}
 
-	onLocation() {
-		return this._onLocation.asObservable();
+	onUpdate() {
+		return this._onUpdate.asObservable();
 	}
 
 	onDisconnect() {
