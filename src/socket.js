@@ -1,14 +1,9 @@
-import {register} from './ioc';
-import {SERVER} from './server';
-import {MANAGER} from './manger';
+import {registerSelf} from './ioc';
+import {Server} from './server';
+import {Manager} from './manger';
 import socket_io from 'socket.io';
 
-export const SOCKET = Symbol.for('SOCKET');
-
-@register(SOCKET, [
-	SERVER,
-	MANAGER
-])
+@registerSelf([Server, Manager])
 export class Socket {
 
 	constructor(server, manager) {
@@ -24,8 +19,6 @@ export class Socket {
 
 	stop() {
 		return new Promise((resolve, reject) => {
-			if (!this._io.engine)
-				return resolve();
 			this._io.close(err => {
 				if (err)
 					reject(err);

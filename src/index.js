@@ -1,20 +1,14 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import {container, register} from './ioc';
+import {container, registerSelf} from './ioc';
 import {boundMethod} from 'autobind-decorator';
-import {SERVER} from './server';
-import {SOCKET} from './socket';
-import {TUNNEL} from './tunnel';
+import {Server} from './server';
+import {Socket} from './socket';
+import {Tunnel} from './tunnel';
 import logger from './logger';
 import args from './args';
 
-export const GARBAGE_TRUCK_TRACKER = Symbol.for('GARBAGE_TRUCK_TRACKER');
-
-@register(GARBAGE_TRUCK_TRACKER, [
-	SERVER,
-	SOCKET,
-	TUNNEL
-])
+@registerSelf([Server, Socket, Tunnel])
 export class GarbageTruckTracker {
 
 	constructor(server, socket, tunnel) {
@@ -46,12 +40,12 @@ export class GarbageTruckTracker {
 				.then(() => logger.info('socket stopped')))
 			.then(this._server.stop)
 			.then(() => logger.info('server stopped'))
-			.then(() => process.exit());
+			.then(() => process.exit(0));
 	}
 
 }
 
-let gtt = container.get(GARBAGE_TRUCK_TRACKER);
+let gtt = container.get(GarbageTruckTracker);
 gtt.start();
 process.once('SIGUSR2', gtt.stop);
 process.once('SIGINT', gtt.stop);

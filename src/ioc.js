@@ -1,6 +1,8 @@
 import {Container} from 'inversify';
 import {helpers} from 'inversify-vanillajs-helpers';
 
-export const container = new Container();
+export const container = new Container({
+	defaultScope: 'Singleton'
+});
 
-export const register = helpers.register(container);
+export const registerSelf = helpers.registerSelf(container);

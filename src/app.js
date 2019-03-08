@@ -1,12 +1,10 @@
-import {register} from './ioc';
+import {registerSelf} from './ioc';
 import {boundMethod} from 'autobind-decorator';
 import express from 'express';
 import morgan from 'morgan';
 import args from './args';
 
-export const APP = Symbol.for('APP');
-
-@register(APP)
+@registerSelf()
 export class App {
 
 	constructor() {

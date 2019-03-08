@@ -1,15 +1,11 @@
-import {register} from './ioc';
+import {registerSelf} from './ioc';
 import {boundMethod} from 'autobind-decorator';
-import {APP} from './app';
+import {App} from './app';
 import http from 'http';
 import devip from 'dev-ip';
 import args from './args';
 
-export const SERVER = Symbol.for('SERVER');
-
-@register(SERVER, [
-	APP
-])
+@registerSelf([App])
 export class Server {
 
 	constructor(app) {

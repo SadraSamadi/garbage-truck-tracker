@@ -9,7 +9,7 @@
 		"build": "NODE_ENV=prod gulp build --color",
 		"dev": "NODE_ENV=dev gulp dev --color",
 		"test": "NODE_ENV=test gulp test --color",
-		"start": "NODE_ENV=prod node . --tunnel"
+		"start": "NODE_ENV=prod node ."
 	},
 	"dependencies": {
 		"@babel/polyfill": "^7.2.5",
@@ -27,6 +27,7 @@
 		"reflect-metadata": "^0.1.13",
 		"rxjs": "^6.4.0",
 		"socket.io": "^2.2.0",
+		"uuid": "^3.3.2",
 		"winston": "^3.2.1",
 		"yargs": "^13.2.2"
 	},

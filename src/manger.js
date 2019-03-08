@@ -1,10 +1,9 @@
-import {register} from './ioc';
+import {registerSelf} from './ioc';
 import {boundMethod} from 'autobind-decorator';
 import {User} from './user';
+import logger from './logger';
 
-export const MANAGER = Symbol.for('MANAGER');
-
-@register(MANAGER)
+@registerSelf()
 export class Manager {
 
 	constructor() {
@@ -19,8 +18,9 @@ export class Manager {
 	@boundMethod
 	_connection(client) {
 		let user = new User(client);
-		this._map.set(client, user);
 		user.init();
+		user.onRegister()
+			.subscribe(this._register);
 		user.onLocation()
 			.subscribe(this._location);
 		user.onDisconnect()
@@ -28,13 +28,29 @@ export class Manager {
 	}
 
 	@boundMethod
+	_register(user) {
+		let users = [];
+		this._map.forEach(user => users.push({
+			id: user.id,
+			name: user.name,
+			location: user.location
+		}));
+		user.client.emit('registered', {
+			id: user.id,
+			users: users
+		});
+		this._map.set(user.id, user);
+		logger.info('registration verified');
+	}
+
+	@boundMethod
 	_location() {
-		// Empty
+		// Blank
 	}
 
 	@boundMethod
 	_disconnect(user) {
-		this._map.delete(user.client);
+		this._map.delete(user.id);
 	}
 
 }

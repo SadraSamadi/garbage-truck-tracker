@@ -1,12 +1,10 @@
-import {register} from './ioc';
+import {registerSelf} from './ioc';
 import localtunnel from 'localtunnel';
 import util from 'util';
 import args from './args';
 import pkg from '../package';
 
-export const TUNNEL = Symbol.for('TUNNEL');
-
-@register(TUNNEL)
+@registerSelf()
 export class Tunnel {
 
 	constructor() {
