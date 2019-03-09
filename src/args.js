@@ -21,4 +21,9 @@ export default yargs
 		type: 'boolean',
 		default: false
 	})
+	.option('log-dependencies', {
+		alias: 'l',
+		type: 'boolean',
+		default: false
+	})
 	.parse();
