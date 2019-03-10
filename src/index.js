@@ -46,7 +46,7 @@ export class GarbageTruckTracker {
 }
 
 let gtt = container.get(GarbageTruckTracker);
-process.once('SIGUSR2', ::gtt.stop);
-process.once('SIGINT', ::gtt.stop);
-process.once('SIGTERM', ::gtt.stop);
+process.on('SIGUSR2', ::gtt.stop);
+process.on('SIGINT', ::gtt.stop);
+process.on('SIGTERM', ::gtt.stop);
 gtt.start();
