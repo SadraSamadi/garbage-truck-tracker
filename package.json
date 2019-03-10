@@ -9,8 +9,8 @@
 		"build": "cross-env NODE_ENV=prod gulp build --color",
 		"dev": "cross-env NODE_ENV=dev gulp dev --color",
 		"test": "cross-env NODE_ENV=test gulp test --color",
-		"postinstall": "yarn build",
-		"start": "cross-env NODE_ENV=prod node ."
+		"start": "cross-env NODE_ENV=prod node .",
+		"postinstall": "yarn build"
 	},
 	"dependencies": {
 		"@babel/polyfill": "^7.2.5",
