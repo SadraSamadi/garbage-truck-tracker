@@ -9,7 +9,7 @@
 		"build": "cross-env NODE_ENV=prod gulp build --color",
 		"dev": "cross-env NODE_ENV=dev gulp dev --color",
 		"test": "cross-env NODE_ENV=test gulp test --color",
-		"postinstall": "npm run build",
+		"postinstall": "yarn build",
 		"start": "cross-env NODE_ENV=prod node ."
 	},
 	"dependencies": {
