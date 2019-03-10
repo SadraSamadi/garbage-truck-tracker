@@ -1,5 +1,4 @@
 import {registerSelf} from './ioc';
-import {boundMethod} from 'autobind-decorator';
 import {User} from './user';
 import logger from './logger';
 
@@ -11,29 +10,27 @@ export class Manager {
 	}
 
 	init(io) {
-		io.on('connection', this._connection);
+		io.on('connection', ::this._connection);
 		return Promise.resolve();
 	}
 
-	@boundMethod
 	_connection(client) {
 		let user = new User(client);
-		user.init();
 		user.onRegister()
-			.subscribe(this._register);
+			.subscribe(::this._register);
 		user.onUpdate()
-			.subscribe(this._update);
+			.subscribe(::this._update);
 		user.onDisconnect()
-			.subscribe(this._disconnect);
+			.subscribe(::this._disconnect);
+		user.init();
 	}
 
-	@boundMethod
 	_register(user) {
 		let users = [];
-		this._map.forEach(user => users.push({
-			id: user.id,
-			name: user.name,
-			location: user.location
+		this._map.forEach(u => users.push({
+			id: u.id,
+			name: u.name,
+			location: u.location
 		}));
 		user.client.emit('registered', {
 			id: user.id,
@@ -43,12 +40,10 @@ export class Manager {
 		logger.info('registration verified');
 	}
 
-	@boundMethod
 	_update() {
 		// Blank
 	}
 
-	@boundMethod
 	_disconnect(user) {
 		this._map.delete(user.id);
 	}

@@ -1,29 +1,28 @@
 import yargs from 'yargs';
 
 export default yargs
-	.option('host', {
-		alias: 'h',
-		type: 'string',
-		default: process.env.HOST || '127.0.0.1'
-	})
 	.option('port', {
 		alias: 'p',
 		type: 'number',
-		default: parseInt(process.env.PORT) || 3000
+		default: parseInt(process.env.PORT) || 3000,
+		description: 'server port number.'
 	})
 	.option('socket', {
 		alias: 's',
 		type: 'boolean',
-		default: true
+		default: true,
+		description: 'should enable socket server or not'
 	})
 	.option('tunnel', {
 		alias: 't',
 		type: 'boolean',
-		default: false
+		default: false,
+		description: 'should enable tunnel for remote access or not'
 	})
-	.option('log-dependencies', {
+	.option('log-deps', {
 		alias: 'l',
 		type: 'boolean',
-		default: false
+		default: false,
+		description: 'show dependency injection graph'
 	})
 	.parse();

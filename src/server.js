@@ -1,5 +1,4 @@
 import {registerSelf} from './ioc';
-import {boundMethod} from 'autobind-decorator';
 import {App} from './app';
 import http from 'http';
 import devip from 'dev-ip';
@@ -9,25 +8,22 @@ import args from './args';
 export class Server {
 
 	constructor(app) {
-		this._app = app;
+		this.app = app;
 		this.httpServer = null;
 	}
 
-	@boundMethod
 	start() {
-		return this._app.init()
+		return this.app.init()
 			.then(() => new Promise(resolve => {
-				this.httpServer = http.createServer(this._app.expressApp);
-				this.httpServer.listen(args.port, args.host, () => {
+				this.httpServer = http.createServer(this.app.expressApp);
+				this.httpServer.listen(args.port, () => {
 					let ips = devip();
-					let address = this.httpServer.address();
-					ips.push(address.address);
+					ips.push('127.0.0.1');
 					resolve(ips);
 				});
 			}));
 	}
 
-	@boundMethod
 	stop() {
 		return new Promise((resolve, reject) => {
 			if (!this.httpServer.listening)

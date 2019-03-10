@@ -1,12 +1,13 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 import {container, registerSelf} from './ioc';
-import {boundMethod} from 'autobind-decorator';
 import {Server} from './server';
 import {Socket} from './socket';
 import {Tunnel} from './tunnel';
 import logger from './logger';
 import args from './args';
+
+logger.info('NODE_ENV=%s', process.env.NODE_ENV);
 
 @registerSelf([Server, Socket, Tunnel])
 export class GarbageTruckTracker {
@@ -19,7 +20,7 @@ export class GarbageTruckTracker {
 
 	start() {
 		return Promise.resolve()
-			.then(this._server.start)
+			.then(::this._server.start)
 			.then(ips => {
 				logger.info('server started');
 				for (let ip of ips)
@@ -31,14 +32,13 @@ export class GarbageTruckTracker {
 				.then(t => logger.info('tunnel started: %s', t.url)));
 	}
 
-	@boundMethod
 	stop() {
 		return Promise.resolve()
 			.then(() => args.tunnel && this._tunnel.stop()
 				.then(() => logger.info('tunnel stopped')))
 			.then(() => args.socket && this._socket.stop()
 				.then(() => logger.info('socket stopped')))
-			.then(this._server.stop)
+			.then(::this._server.stop)
 			.then(() => logger.info('server stopped'))
 			.then(() => process.exit(0));
 	}
@@ -46,7 +46,7 @@ export class GarbageTruckTracker {
 }
 
 let gtt = container.get(GarbageTruckTracker);
+process.once('SIGUSR2', ::gtt.stop);
+process.once('SIGINT', ::gtt.stop);
+process.once('SIGTERM', ::gtt.stop);
 gtt.start();
-process.once('SIGUSR2', gtt.stop);
-process.once('SIGINT', gtt.stop);
-process.once('SIGTERM', gtt.stop);

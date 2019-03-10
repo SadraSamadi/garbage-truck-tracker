@@ -1,4 +1,3 @@
-import {boundMethod} from 'autobind-decorator';
 import uuid from 'uuid';
 import {Subject} from 'rxjs';
 import logger from './logger';
@@ -17,12 +16,11 @@ export class User {
 
 	init() {
 		logger.info('user connected: %s', this.id);
-		this.client.on('register', this._register);
-		this.client.on('disconnect', this._disconnect);
+		this.client.on('register', ::this._register);
+		this.client.on('disconnect', ::this._disconnect);
 		return Promise.resolve();
 	}
 
-	@boundMethod
 	_register(name) {
 		this.name = name;
 		logger.info('user registered: %s', this.id);
@@ -32,11 +30,10 @@ export class User {
 			name: this.name
 		});
 		logger.info('user added broadcast emitted');
-		this.client.on('update:location', this._update);
+		this.client.on('update:location', ::this._update);
 		this._onRegister.next(this);
 	}
 
-	@boundMethod
 	_update(location) {
 		this.location = location;
 		logger.info('user location updated: %s', this.id);
@@ -51,7 +48,6 @@ export class User {
 		this._onUpdate.next(this);
 	}
 
-	@boundMethod
 	_disconnect() {
 		logger.info('user disconnected: %s', this.id);
 		logger.info('\t# %s', this.name);

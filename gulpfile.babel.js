@@ -54,10 +54,10 @@ export function serve() {
 	return new Observable(observer => {
 		watch(paths.src.assets, copy);
 		watch(paths.src.scripts, scripts);
-		nodemon({watch: paths.dest.root});
+		let nm = nodemon({watch: paths.dest.root});
 		// eslint-disable-next-line no-console
-		nodemon.on('log', log => console.log(log.colour));
-		nodemon.on('quit', code => {
+		nm.on('log', log => console.log(log.colour));
+		nm.on('quit', code => {
 			observer.complete();
 			process.exit(code);
 		});

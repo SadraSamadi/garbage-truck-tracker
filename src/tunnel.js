@@ -18,8 +18,7 @@ export class Tunnel {
 	}
 
 	stop() {
-		if (this._tunnel)
-			this._tunnel.close();
+		this._tunnel?.close();
 		return Promise.resolve();
 	}
 

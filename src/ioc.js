@@ -7,7 +7,7 @@ export const container = new Container({
 	defaultScope: 'Singleton'
 });
 
-if (args['log-dependencies']) {
+if (args['log-deps']) {
 	let logger = makeLoggerMiddleware();
 	container.applyMiddleware(logger);
 }

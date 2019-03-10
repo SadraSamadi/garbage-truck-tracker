@@ -5,10 +5,12 @@
 		"node": true,
 		"jest": true
 	},
+	"plugins": [
+		"babel"
+	],
+	// TODO: this version has some bugs with class private methods, update to the next version
 	"parser": "babel-eslint",
 	"parserOptions": {
-		"ecmaVersion": 2018,
-		"sourceType": "module",
 		"ecmaFeatures": {
 			"legacyDecorators": true
 		}
