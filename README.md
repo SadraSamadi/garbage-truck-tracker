@@ -3,8 +3,8 @@
 ## Back-end for garbage truck tracker.
 
 ### Usage
-* clone project
-* open a terminal and run this commands:
+* clone the project
+* open a terminal and run these commands:
 	* `yarn` or `npm install`
 	* `yarn build` or `npm run build`
 	* `yarn start <options>` or `npm run start <options>`
