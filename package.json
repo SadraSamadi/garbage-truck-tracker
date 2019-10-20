@@ -15,7 +15,7 @@
 	"dependencies": {
 		"@babel/polyfill": "^7.2.5",
 		"@babel/runtime": "^7.3.4",
-		"axios": "^0.18.0",
+		"axios": "^0.18.1",
 		"cross-env": "^5.2.0",
 		"dev-ip": "^1.0.1",
 		"dotenv": "^6.2.0",
