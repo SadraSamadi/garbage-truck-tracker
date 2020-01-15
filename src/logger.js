@@ -20,7 +20,7 @@ export default winston.createLogger({
 	transports: [
 		new winston.transports.Console(),
 		new winston.transports.File({
-			filename: '.log',
+			filename: 'app.log',
 			maxsize: 10 * 1024 * 1024,
 			maxFiles: 1
 		})

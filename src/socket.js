@@ -1,10 +1,10 @@
+import SocketIO from 'socket.io';
 import {registerSelf} from './ioc';
-import {Server} from './server';
-import {Manager} from './manger';
-import socket_io from 'socket.io';
+import Server from './server';
+import Manager from './manger';
 
 @registerSelf([Server, Manager])
-export class Socket {
+export default class Socket {
 
 	constructor(server, manager) {
 		this._server = server;
@@ -13,7 +13,7 @@ export class Socket {
 	}
 
 	start() {
-		this._io = socket_io(this._server.httpServer);
+		this._io = SocketIO(this._server.http);
 		return this._manager.init(this._io);
 	}
 

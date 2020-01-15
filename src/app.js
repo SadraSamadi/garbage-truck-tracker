@@ -1,26 +1,42 @@
 import {registerSelf} from './ioc';
-import express from 'express';
-import morgan from 'morgan';
+import Server from './server';
+import Socket from './socket';
+import Tunnel from './tunnel';
+import logger from './logger';
 import args from './args';
 
-@registerSelf()
-export class App {
+@registerSelf([Server, Socket, Tunnel])
+export default class App {
 
-	constructor() {
-		this.expressApp = express();
+	constructor(server, socket, tunnel) {
+		this._server = server;
+		this._socket = socket;
+		this._tunnel = tunnel;
 	}
 
-	init() {
-		this.expressApp.set('port', args.port);
-		this.expressApp.use(morgan('dev'));
-		this.expressApp.use(express.json());
-		this.expressApp.use(express.urlencoded({extended: false}));
-		this.expressApp.get('/', ::this._index);
-		return Promise.resolve();
+	start() {
+		return Promise.resolve()
+			.then(::this._server.start)
+			.then(ips => {
+				logger.info('server started');
+				for (let ip of ips)
+					logger.info('\t@ http://%s:%d', ip, args.port);
+			})
+			.then(() => args.socket && this._socket.start()
+				.then(() => logger.info('socket started')))
+			.then(() => args.tunnel && this._tunnel.start()
+				.then(t => logger.info('tunnel started: %s', t.url)));
 	}
 
-	_index(req, res) {
-		res.end('Hello, World!');
+	stop() {
+		return Promise.resolve()
+			.then(() => args.tunnel && this._tunnel.stop()
+				.then(() => logger.info('tunnel stopped')))
+			.then(() => args.socket && this._socket.stop()
+				.then(() => logger.info('socket stopped')))
+			.then(::this._server.stop)
+			.then(() => logger.info('server stopped'))
+			.then(() => process.exit(0));
 	}
 
 }

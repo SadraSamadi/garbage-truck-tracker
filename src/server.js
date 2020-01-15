@@ -1,22 +1,22 @@
-import {registerSelf} from './ioc';
-import {App} from './app';
 import http from 'http';
 import devip from 'dev-ip';
+import {registerSelf} from './ioc';
+import Api from './api';
 import args from './args';
 
-@registerSelf([App])
-export class Server {
+@registerSelf([Api])
+export default class Server {
 
-	constructor(app) {
-		this.app = app;
-		this.httpServer = null;
+	constructor(api) {
+		this._api = api;
+		this.http = null;
 	}
 
 	start() {
-		return this.app.init()
+		return this._api.init()
 			.then(() => new Promise(resolve => {
-				this.httpServer = http.createServer(this.app.expressApp);
-				this.httpServer.listen(args.port, () => {
+				this.http = http.createServer(this._api.exp);
+				this.http.listen(args.port, () => {
 					let ips = devip();
 					ips.push('127.0.0.1');
 					resolve(ips);
@@ -26,9 +26,9 @@ export class Server {
 
 	stop() {
 		return new Promise((resolve, reject) => {
-			if (!this.httpServer.listening)
+			if (!this.http.listening)
 				return resolve();
-			this.httpServer.close(err => {
+			this.http.close(err => {
 				if (err)
 					reject(err);
 				else
