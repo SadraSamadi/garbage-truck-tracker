@@ -1,9 +1,9 @@
 import {registerSelf} from './ioc';
-import User from './user';
+import {User} from './user';
 import logger from './logger';
 
 @registerSelf()
-export default class Manager {
+export class Manager {
 
 	constructor() {
 		this._map = new Map();
@@ -22,7 +22,7 @@ export default class Manager {
 			.subscribe(::this._update);
 		user.onDisconnect()
 			.subscribe(::this._disconnect);
-		return user.init();
+		user.init();
 	}
 
 	_register(user) {

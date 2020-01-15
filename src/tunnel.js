@@ -1,11 +1,11 @@
-import util from 'util';
-import localtunnel from 'localtunnel';
 import {registerSelf} from './ioc';
-import pkg from '../package';
+import localtunnel from 'localtunnel';
+import util from 'util';
 import args from './args';
+import pkg from '../package';
 
 @registerSelf()
-export default class Tunnel {
+export class Tunnel {
 
 	constructor() {
 		this._tunnel = null;
@@ -13,7 +13,7 @@ export default class Tunnel {
 
 	start() {
 		let lt = util.promisify(localtunnel);
-		return lt({port: args.port, subdomain: pkg.name})
+		return lt(args.port, {subdomain: pkg.name})
 			.then(tunnel => this._tunnel = tunnel);
 	}
 

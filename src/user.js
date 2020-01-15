@@ -2,7 +2,7 @@ import uuid from 'uuid';
 import {Subject} from 'rxjs';
 import logger from './logger';
 
-export default class User {
+export class User {
 
 	constructor(client) {
 		this.id = uuid();
